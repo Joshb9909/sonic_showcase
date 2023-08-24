@@ -105,7 +105,7 @@ export default function MyProfilePage() {
 
   return (
     <div className='pt-2 w-screen h-screen flex justify-center items-start bg-gradient-to-br from-purple-700 to-gray-800' style={{ maxHeight: '100vh', overflowY: 'auto' }}>
-      <div className="w-5/6 h-auto flex flex-row flex-wrap items-center bg-slate-900 p-10 pt-16 pb-16 ring-2 ring-gray-500 rounded-xl text-neutral-300 m-10 mt-20">
+      <div className="lg:w-5/6 lg:h-auto sm:w-full sm:h-full flex flex-row flex-wrap items-center bg-slate-900 p-10 pt-16 pb-16 ring-2 ring-gray-500 rounded-xl text-neutral-300 m-10 mt-20">
 
         <div className="w-full flex flex-row flex-wrap items-center mb-10 justify-between">
           <div className="w-fit flex flex-row flex-wrap items-center text-center">

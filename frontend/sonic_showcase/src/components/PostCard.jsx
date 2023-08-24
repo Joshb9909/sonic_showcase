@@ -58,12 +58,12 @@ export default function PostCard() {
   }
 
   return (
-    <div className='pt-2 w-screen flex flex-col items-center bg-gradient-to-br from-purple-700 to-gray-800' style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+    <div className='pt-2 w-screen flex flex-col items-center bg-gradient-to-br from-purple-700 to-gray-800 overflow-hidden' style={{ maxHeight: '100vh', overflowY: 'auto' }}>
 
       {posts.map((post) => (
-        <div key={post.id} onClick={() => handlePostClick(post.id)} className="cursor-pointer mt-5 mb-5 w-4/6 ring-1 ring-gray-500 rounded-xl hover:ring-4 bg-slate-900 text-neutral-300" style={{ height: '50%' }}>
+        <div key={post.id} onClick={() => handlePostClick(post.id)} className="cursor-pointer mt-5 mb-5 lg:w-4/6 lg:h-1/2 sm:w-full sm:h-full ring-1 break-words ring-gray-500 rounded-xl hover:ring-4 bg-slate-900 text-neutral-300">
 
-          <div className='flex flex-row justify-start items-center w-full border-b-2 border-gray-500 p-4'>
+          <div className='flex flex-row justify-start break-words items-center w-full border-b-2 border-gray-500 p-4'>
 
             <img className='w-10 h-10 ring-1 ring-gray-500 rounded-full object-cover' src={post.userDetails.profile_picture ? post.userDetails.profile_picture : blankProfilePicture} />
 
@@ -72,9 +72,9 @@ export default function PostCard() {
 
           <div className='pl-4 pt-4 text-lg font-semibold underline overflow-ellipsis overflow-hidden'>{post.post_title}</div>
 
-          <div className='flex flex-row h-full flex-wrap'>
+          <div className='flex flex-row h-full break-words flex-wrap'>
 
-            <div className='pt-4 pl-4 pr-3 overflow-ellipsis overflow-hidden'>{post.post_content}</div>
+            <div className='pt-4 pl-4 h-auto pr-3 overflow-hidden break-words'>{post.post_content}</div>
             
             <div className='flex flex-row justify-around items-center w-full pb-8'>
 
