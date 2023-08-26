@@ -20,11 +20,11 @@ export default function LoginPage(){
           "username": username,
           "password": password,
         });
-        let token = response.data.token;
+        //let token = response.data.token;
         let userResponse = response.data;
-        console.log(userResponse)
-        localStorage.setItem("token", token);
-        api.defaults.headers.common["Authorization"] = `Token ${token}`;
+        //console.log(userResponse)
+        //localStorage.setItem("token", token);
+        //api.defaults.headers.common["Authorization"] = `Token ${token}`;
         setUser(userResponse);
         navigate("/home");
       };

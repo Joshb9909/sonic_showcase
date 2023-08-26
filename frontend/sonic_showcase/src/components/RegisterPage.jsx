@@ -31,9 +31,9 @@ export default function RegisterPage() {
       });
   
       let user = response.data.user;
-      let token = response.data.token;
-      localStorage.setItem("token", token);
-      api.defaults.headers.common["Authorization"] = `Token ${token}`;
+      //let token = response.data.token;
+      //localStorage.setItem("token", token);
+      //api.defaults.headers.common["Authorization"] = `Token ${token}`;
       navigate("/");
     };
   

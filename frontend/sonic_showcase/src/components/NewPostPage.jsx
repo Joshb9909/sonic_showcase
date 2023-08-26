@@ -17,8 +17,6 @@ export default function NewPostPage() {
   const createPost = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('token');
-
     const formData = new FormData();
     formData.append('post_title', postTitle);
     formData.append('post_content', postContent);
@@ -31,7 +29,7 @@ export default function NewPostPage() {
 
     try {
       const response = await api.post('/post/new-post/', formData, { 
-        headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       if (response.status === 201) {

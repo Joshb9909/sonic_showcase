@@ -7,15 +7,15 @@ import blankProfilePicture from '../assets/blank-profile-picture-973460_640.png'
 
 export default function MyProfilePage() {
   const { user, setUser } = useContext(AppContext);
-  const [username, setUsername] = useState(user.username);
-  const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState(user.password);
-  const [description, setDescription] = useState(user.description);
-  const [profile_picture, setProfilePicture] = useState(user.profile_picture);
   const [showProfilePictureForm, setShowProfilePictureForm] = useState(false);
   const [showUsernameForm, setShowUsernameForm] = useState(false);
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [username, setUsername] = useState(user?.username || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [password, setPassword] = useState(user?.password || '');
+  const [description, setDescription] = useState(user?.description || '');
+  const [profile_picture, setProfilePicture] = useState(user?.profile_picture || blankProfilePicture);
   const [showDescriptionForm, setShowDescriptionForm] = useState(false);
   const toggleProfilePictureForm = () => setShowProfilePictureForm(!showProfilePictureForm);
   const toggleUsernameForm = () => setShowUsernameForm(!showUsernameForm);
@@ -103,6 +103,10 @@ export default function MyProfilePage() {
       }
     };
 
+  if (!user) {
+  return <div className='w-screen h-screen bg-gradient-to-br from-purple-700 to-gray-800'>Loading...</div>;
+  }
+
   return (
     <div className='pt-2 w-screen h-screen flex justify-center items-start bg-gradient-to-br from-purple-700 to-gray-800' style={{ maxHeight: '100vh', overflowY: 'auto' }}>
       <div className="lg:w-5/6 lg:h-auto sm:w-full sm:h-full flex flex-row flex-wrap items-center bg-slate-900 p-10 pt-16 pb-16 ring-2 ring-gray-500 rounded-xl text-neutral-300 m-10 mt-20">
@@ -135,12 +139,12 @@ export default function MyProfilePage() {
           <div className="w-fit flex flex-row justify-center items-center flex-wrap">
 
             <div className="w-fit flex flex-col justify-center items-center text-center p-10">
-              <div className="text-2xl" >{user.followers.length}</div>
+              <div className="text-2xl" >{(user.followers && user.followers.length) ? user.followers.length : 0}</div>
               <div className="text-xl">Followers</div>
             </div>
 
             <div className="w-fit flex flex-col justify-center items-center text-center p-10">
-              <div className="text-2xl">{user.following.length}</div>
+              <div className="text-2xl">{(user.following && user.following.length) ? user.following.length : 0}</div>
               <div className="text-xl">Following</div>
             </div>
           </div>

@@ -13,10 +13,11 @@ from rest_framework.status import (
 )
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from user_app.utilities import HttpOnlyToken
 # Create your views here.
 
 class Create_a_comment(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -40,7 +41,7 @@ class Create_a_comment(APIView):
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
         
 class Delete_a_comment(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, pk):

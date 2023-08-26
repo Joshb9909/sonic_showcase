@@ -15,11 +15,11 @@ from rest_framework.status import (
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from services.spotify import search_tracks, get_track_by_id
-
+from user_app.utilities import HttpOnlyToken
 # Create your views here.
 
 class New_post(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -42,7 +42,7 @@ class New_post(APIView):
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
         
 class Delete_a_post(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):

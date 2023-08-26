@@ -30,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['sonicshowcase.com','0.0.0.0','www.sonicshowcase.com']
 
 
 # Application definition
@@ -119,12 +119,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com", #domain
-    "https://sub.example.com", #subdomain
-    "http://localhost:5173", #development server
-]
+CORS_ALLOWED_ORIGINS = ["https://sonicshowcase.com"]
 
+CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_SECURE = True
+
+SESSION_COOKIE_HTTPONLY = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

@@ -17,6 +17,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import LimitOffsetPagination
+from datetime import datetime, timedelta
+from .utilities import HttpOnlyToken
 # Create your views here.
 
 class Sign_up(APIView):
@@ -46,13 +48,18 @@ class Log_in(APIView):
         user = authenticate(username=username, password=password)
         if user:
             token, created = Token.objects.get_or_create(user=user)
+            life_time = datetime.now() + timedelta(days=30)
+            format_life_time = life_time.strftime("%a, %d %b %Y %H:%M:%S CST")
             user_serializer = UserSerializer(user)
-            return Response({"token": token.key, **user_serializer.data})
+            response = Response({"user":{**user_serializer.data}})
+            response.set_cookie(key="token", value=token.key, httponly=True, secure=True, samesite="Lax", expires = format_life_time)
+            return response
+            # return Response({"token": token.key, **user_serializer.data})
         else:
             return Response("No user matching credentials", status=HTTP_404_NOT_FOUND)
         
 class Log_out(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -60,7 +67,7 @@ class Log_out(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
 class Delete_Account(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):
@@ -68,7 +75,7 @@ class Delete_Account(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
     
 class Info(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -107,7 +114,7 @@ class SearchUsers(APIView):
         return Response(serializer.data, status=HTTP_200_OK)
 
 class Follow_User(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def post(self, request, user_id):
@@ -124,7 +131,7 @@ class Follow_User(APIView):
 
 
 class Edit_Description(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
@@ -134,7 +141,7 @@ class Edit_Description(APIView):
         return Response({'status': 'success'}, status=HTTP_201_CREATED)
     
 class Edit_Username(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
@@ -144,7 +151,7 @@ class Edit_Username(APIView):
         return Response({'status': 'success'}, status=HTTP_201_CREATED)
     
 class Edit_Email(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
@@ -154,7 +161,7 @@ class Edit_Email(APIView):
         return Response({'status': 'success'}, status=HTTP_201_CREATED)
     
 class Edit_Password(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
@@ -164,7 +171,7 @@ class Edit_Password(APIView):
         return Response({'status': 'success'}, status=HTTP_201_CREATED)
     
 class EditProfilePicture(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
@@ -179,7 +186,7 @@ class EditProfilePicture(APIView):
         return Response({"message": "Profile picture updated successfully."}, status=HTTP_200_OK)
     
 class UpdateProfilePictureURL(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
@@ -195,7 +202,7 @@ class UpdateProfilePictureURL(APIView):
 
 
 class View_Followers(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -203,7 +210,7 @@ class View_Followers(APIView):
         return Response({'followers': followers})
     
 class View_Following(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):

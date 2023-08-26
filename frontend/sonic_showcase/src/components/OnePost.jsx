@@ -7,6 +7,7 @@ import CommentIcon from '../assets/CommentIcon';
 import AutoGrowingTextarea from '../assets/AutoGrowingTextField';
 import ArrowIcon from '../assets/ArrowIcon';
 import { useNavigate } from 'react-router-dom';
+import blankProfilePicture from '../assets/blank-profile-picture-973460_640.png';
 
 export default function OnePost() {
   const [post, setPost] = useState(null)
@@ -138,7 +139,7 @@ export default function OnePost() {
         getAllComments();
     },[commentsUpdated])
 
-    if (loading) {
+    if (loading || !user) {
         return <div className='w-screen h-screen bg-gradient-to-br from-purple-700 to-gray-800'>Loading...</div>;
     }
 

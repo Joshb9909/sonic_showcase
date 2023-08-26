@@ -7,10 +7,11 @@ from .models import Message
 from .serializers import MessageSerializer
 from user_app.models import User
 from django.db.models import Q
+from user_app.utilities import HttpOnlyToken
 
 class Send_Message(APIView):
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -26,7 +27,7 @@ class Send_Message(APIView):
 
 class Get_Conversation(APIView):
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, other_user_id):
@@ -40,7 +41,7 @@ class Get_Conversation(APIView):
 
 class Get_All_Conversations(APIView):
     
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyToken]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
