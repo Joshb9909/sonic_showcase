@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const SonicShowcaseLogo = () => {
+const SonicShowcaseLogo = ({ className }) => {
 
     const [hovered, setHovered] = useState(false);
 
@@ -10,7 +10,7 @@ const SonicShowcaseLogo = () => {
     const fill = hovered ? hoverStroke : baseStroke
 
     return (
-        <svg width='20vh' id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.41 19.47" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}><g id="Layer_1-2">
+        <svg className={className} id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.41 19.47" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}><g id="Layer_1-2">
         <path d="m.51,8.67c-.4-.21-.53-.72-.31-1.11l.43-.75c.82.71,1.85.84,2.64.84,1.03,0,1.58-.4,1.58-1,0-.7-.97-.98-1.76-1.2-1.48-.41-3.09-.94-3.09-2.76C0,1.11,1.2.1,3.27.1c.77,0,1.54.11,2.28.41.44.18.62.7.41,1.12h0c-.19.36-.62.52-1,.38-.6-.22-1.19-.29-1.69-.29-.89,0-1.45.35-1.45.89,0,.64.85.89,1.69,1.13,1.54.43,3.17.97,3.17,2.79,0,1.63-1.19,2.73-3.41,2.73-.89,0-1.87-.13-2.76-.6Z" fill={fill} strokeWidth="2"/>
         <path d="m7.51,4.69C7.51,1.96,9.2.1,12.06.1s4.55,1.86,4.55,4.58-1.69,4.58-4.55,4.58-4.55-1.87-4.55-4.58Zm7.21,0c0-1.77-.91-2.94-2.66-2.94s-2.66,1.16-2.66,2.94.91,2.94,2.66,2.94,2.66-1.16,2.66-2.94Z" fill={fill} strokeWidth="2"/>
         <path d="m17.81.22h.98c.18,0,.36.06.51.16l2.9,2.01c.6.41,1.41-.01,1.41-.74v-.53c0-.5.4-.9.9-.9h0c.5,0,.9.4.9.9v7.08c0,.5-.4.9-.9.9h0c-.5,0-.9-.4-.9-.9v-2.28c0-.3-.14-.57-.39-.74l-2.2-1.52c-.6-.41-1.41.01-1.41.74v3.8c0,.5-.4.9-.9.9h0c-.5,0-.9-.4-.9-.9V.22Z" fill={fill} strokeWidth="2"/>

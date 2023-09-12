@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 
-const Logo = () => {
+const Logo = ({ className }) => {
 
   const [hovered, setHovered] = useState(false);
 
@@ -10,7 +10,7 @@ const Logo = () => {
   const fill = hovered ? hoverStroke : baseStroke
 
   return (
-    <svg width="2.7vw" height="10vh" viewBox="0 0 32 32" enableBackground="new 0 0 32 32" id="Stock_cut" version="1.1" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <svg className={className} viewBox="0 0 32 32" enableBackground="new 0 0 32 32" id="Stock_cut" version="1.1" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       <desc />
       <g>
         <circle cx="16" cy="16" fill="none" r="15" stroke={fill} strokeLinejoin="round" strokeMiterlimit="10" strokeWidth="2" />

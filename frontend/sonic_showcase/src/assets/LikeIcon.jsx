@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const LikeIcon = () => {
+const LikeIcon = ({ className }) => {
   const [isFilled, setIsFilled] = useState(false);
   const [outLine, setOutline] = useState('#FFFFFF')
 
@@ -19,7 +19,7 @@ const LikeIcon = () => {
   const fillColor = isFilled ? '#9C27B0' : 'none'; // Change '#ff0000' to your desired fill color
 
   return (
-    <svg onClick={handleIconClick} width="3vw" height="6vh" viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg">
+    <svg onClick={handleIconClick} className={className} viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <style>{`.c { fill: ${fillColor}; stroke: ${outLine}; stroke-linecap: round; stroke-linejoin: round; }`}</style>
       </defs>

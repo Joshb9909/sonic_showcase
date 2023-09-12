@@ -14,7 +14,7 @@ export default function OnePost() {
   const [loading, setLoading] = useState(true)
   const { postId } = useParams();
   const [likes, setLikes] = useState('0')
-  const { user } = useContext(AppContext)
+  const { user, userLoading } = useContext(AppContext)
   const [ isLiked, setIsLiked ] = useState(false)
   const [ fillColor, setFillColor ] = useState('')
   const [ outline, setOutline ] = useState('')
@@ -25,44 +25,53 @@ export default function OnePost() {
 
   useEffect(() => {
     const fetchPostDetails = async () => {
-        try {
-            // requesting post
-            const response = await api.get(`/post/get-post/${postId}/`);
-            const fetchedPost = response.data;
-
-            // fetching track data if exists
-            if (fetchedPost.track_id) {
-                try {
-                    const trackResponse = await api.get(`/post/get-track-by-id/${fetchedPost.track_id}/`);
-                    fetchedPost.track = trackResponse.data;
-                } catch (error) {
-                    console.error('Failed to load track for post:', fetchedPost.id, error);
-                }
-            }
-
-            // fetching user information for the user who made the post
-            try {
-                const userResponse = await api.get(`/user/get-user-by-id/${fetchedPost.user_id}/`);
-                fetchedPost.userDetails = userResponse.data;
-            } catch (error) {
-                console.error('Failed to load user details for post:', fetchedPost.id, error);
-            }
-
-            setPost(fetchedPost);
-            setLoading(false);
-        } catch (error) {
-            console.error('An error occurred while fetching the post:', error);
-            setLoading(false);
+      try {
+        // requesting post
+        const response = await api.get(`/post/get-post/${postId}/`);
+        const fetchedPost = response.data;
+  
+        // fetching track data if exists
+        if (fetchedPost.track_id) {
+          try {
+            const trackResponse = await api.get(`/post/get-track-by-id/${fetchedPost.track_id}/`);
+            fetchedPost.track = trackResponse.data;
+          } catch (error) {
+            console.error('Failed to load track for post:', fetchedPost.id, error);
+          }
         }
-    };
+  
+        // fetching user information for the user who made the post
+        try {
+          const userResponse = await api.get(`/user/get-user-by-id/${fetchedPost.user_id}/`);
+          fetchedPost.userDetails = userResponse.data;
+        } catch (error) {
+          console.error('Failed to load user details for post:', fetchedPost.id, error);
+        }
+  
+        setPost(fetchedPost);
 
+        setLoading(false);
+        
+      } catch (error) {
+        console.error('An error occurred while fetching the post:', error);
+        if (user) {
+          setLoading(false);
+        }
+      }
+  };
+  
     fetchPostDetails();
   }, [postId]);
+  
 
 
     const fetchAndInitiateLikes = async () => {
         try {
 
+        if (userLoading || !user) {
+            console.warn('User or user.id is not available')
+            return;
+        }
         // getting the likes of the post
         const response = await api.get(`/post/${postId}/likes/`);
 
@@ -96,10 +105,20 @@ export default function OnePost() {
     };
 
     useEffect(() => {
+
+        if(!user){
+            return
+        }
+
         fetchAndInitiateLikes();
-    }, [postId, user.id]);
+    }, [postId, user, userLoading]);
 
     useEffect(() => {
+
+        if(!user){
+            return
+        }
+
         if (isLiked) {
           setFillColor('#9C27B0');
           setOutline('#9C27B0');
@@ -107,7 +126,7 @@ export default function OnePost() {
           setFillColor('none');
           setOutline('#FFFFFF');
         }
-      }, [isLiked]);
+      }, [isLiked, user]);
 
       const handleSubmitComment = async () => {
         const data = {
@@ -126,6 +145,14 @@ export default function OnePost() {
         }
     };
 
+    const handleProfileClick = () => {
+      if(post.userDetails.id === user.id){
+        navigate('/home/my-profile')
+      } else {
+        navigate(`/home/user/${post.userDetails.username}`)
+      }
+    }
+
     useEffect(() => {
         const getAllComments = async () => {
             try {
@@ -139,22 +166,22 @@ export default function OnePost() {
         getAllComments();
     },[commentsUpdated])
 
-    if (loading || !user) {
-        return <div className='w-screen h-screen bg-gradient-to-br from-purple-700 to-gray-800'>Loading...</div>;
+    if (loading) {
+        return <div className='w-screen h-screen bg-black'>Loading...</div>;
     }
 
     if (!post) {
-        return <div className='w-screen h-screen bg-gradient-to-br from-purple-700 to-gray-800'>Post not found.</div>;
+        return <div className='w-screen h-screen bg-black'>Post not found.</div>;
     }
 
     return (
-        <div className='pt-16 pb-6 w-screen h-screen flex flex-col items-center bg-gradient-to-br from-purple-700 to-gray-800' style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+        <div className='md:pt-16 md:pb-6 pb-20 w-screen h-screen flex flex-col items-center bg-black overflow-y-scroll overflow-x-hidden'>
 
-            <div className="mt-5 w-5/6 h-fit ring-1 ring-gray-500 rounded-xl bg-slate-900 text-neutral-300">
+            <div className="mt-5 w-5/6 h-fit ring-1 ring-purple-700 rounded-xl bg-gray-900 text-neutral-300">
 
                 {/* displaying only after the user promise has been completed */}
                 {post.userDetails &&(
-                    <div onClick={() => navigate(`/home/user/${post.userDetails.username}`)} className='flex flex-row justify-start items-center w-full border-b-2 border-gray-500 p-4 hover:cursor-pointer hover:bg-gray-700 rounded-tr-xl rounded-tl-xl'>
+                    <div onClick={handleProfileClick} className='flex flex-row justify-start items-center w-full border-b-2 border-gray-700 p-4 hover:cursor-pointer hover:bg-gray-700 rounded-tr-xl rounded-tl-xl'>
                         <img className='w-10 h-10 ring-1 ring-gray-500 rounded-full object-cover' src={post.userDetails.profile_picture ? post.userDetails.profile_picture : blankProfilePicture} />
                         <p className='pl-4 text-xl'>{post.userDetails.username}</p>
                     </div>
@@ -166,11 +193,11 @@ export default function OnePost() {
 
                 <div className='pt-4 pb-2 pl-4 pr-3 overflow-ellipsis overflow-hidden' >{post.post_content}</div>
 
-                <div className='flex flex-row justify-around items-center w-full pb-8'>
+                <div className='flex md:flex-row flex-col justify-around items-center w-full md:pb-8'>
 
                 {/* checking if a file exists for the post */}
                 {post.post_file && (
-                  <div className='w-auto max-w-2xl pl-6 pr-6 pt-6'>
+                  <div className='w-auto md:w-1/2 max-w-2xl pl-6 pr-6 pt-3'>
                     {post.post_file.endsWith('.mp4') ? (
                       <video src={post.post_file} className='object-cover ring-2 ring-gray-500 h-5/6 w-full rounded-xl' controls />
                     ) : (
@@ -181,21 +208,22 @@ export default function OnePost() {
 
                 {/* checking if there is a track linked with the post */}
                 {post.track && (
-                  <div className='w-auto pl-6 pr-6 pt-6'>
-                    <a href={post.track.external_urls.spotify} target='_blank' rel='noopener noreferrer'><img className='ring-2 ring-gray-500 rounded-md' src={post.track.album.images[1].url} alt={`Album cover for ${post.track.name}`} /></a>
+                  <div className='w-auto md:w-1/3 pl-0 ml-4 pr-0 mr-4 pt-0 md:pb-2 md:mt-2 rounded-lg flex flex-col justify-center bg-purple-800 ring-2 ring-purple-500 items-center text-center'>
+                    <a href={post.track.external_urls.spotify} className='flex justify-center items-center' target='_blank' rel='noopener noreferrer'><img className='w-32 h-20' src='https://upload.wikimedia.org/wikipedia/commons/4/47/Spotify_Badge_White.svg' /></a>
+                    <a href={post.track.external_urls.spotify} className='flex justify-center items-center' target='_blank' rel='noopener noreferrer'><img className='ring-2 md:w-2/3 ring-gray-500 rounded-md' src={post.track.album.images[1].url} alt={`Album cover for ${post.track.name}`} /></a>
                     <div className='m-4 bg-gray-700 rounded-md text-center'>{post.track.name} by {post.track.artists[0].name}</div>
                   </div>
                 )}
 
               </div>
             </div>
-                <div className='flex flex-row justify-between' style={{ padding: '2vh'}}>
+                <div className='flex flex-row flexwrap justify-between items-center p-2'>
 
-                    <div className='flex flex-row items-start'>
+                    <div className='flex flex-row justify-center text-center items-center'>
 
                         <button onClick={likePost}>
 
-                            <svg width="3vw" height="6vh" viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg">
+                            <svg className='w-10 h-10 ml-2' viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <style>{`.c { fill: ${fillColor}; stroke: ${outline}; stroke-linecap: round; stroke-linejoin: round; }`}</style>
                                 </defs>
@@ -203,13 +231,13 @@ export default function OnePost() {
                             </svg>
                         </button>
 
-                        <div className='pl-2 pt-1' style={{ fontSize: '3vh'}}>{likes}</div>
+                        <div className='pl-2 text-lg'>{likes}</div>
                     </div>
 
-                        <div className='flex flex-row w-full ml-6 mt-0.5 justify-between'>
-                            <CommentIcon />
+                        <div className='flex flex-row md:w-full h-10 ml-3 mt-0.5 justify-between items-center'>
+                            <CommentIcon className='md:w-10 md:h-10 w-12 h-12 md:pt-0'/>
                             <AutoGrowingTextarea text={commentText} setText={setCommentText} />
-                            <button onClick={handleSubmitComment}><ArrowIcon className='ml-2'/></button>
+                            <button onClick={handleSubmitComment}><ArrowIcon className='ml-2 mr-2 w-10 h-10'/></button>
                         </div>
                     </div>
 
