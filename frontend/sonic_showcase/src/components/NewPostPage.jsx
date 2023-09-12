@@ -111,7 +111,7 @@ export default function NewPostPage() {
                 </div>
 
                 <div className="flex flex-col items-center justify-center">
-                    <input className='flex w-1/2 bg-gray-700 ring-1 ring-gray-500 rounded-md text-center mr-2' placeholder='Link a Spotify Track' value={trackSearch} onChange={(e) => setTrackSearch(e.target.value)} />
+                    <input className='flex w-1/2 bg-gray-700 ring-1 ring-gray-500 rounded-md text-center mr-2' placeholder='Search for a Spotify Track/Click to link to your post' value={trackSearch} onChange={(e) => setTrackSearch(e.target.value)} />
                     <button type='button' onClick={searchSpotify} className="bg-gradient-to-br from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white p-1 mt-4 rounded-md">Search</button>
                 </div>
 

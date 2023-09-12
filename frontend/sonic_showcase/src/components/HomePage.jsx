@@ -7,8 +7,8 @@ export default function HomePage(){
 
     return (
         <>
-        <Navbar />
-        <Outlet />
+            <Navbar />
+            <Outlet />
         </>
     )
 }

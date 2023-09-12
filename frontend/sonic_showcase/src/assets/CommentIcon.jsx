@@ -1,7 +1,7 @@
 import React from 'react';
 
-const CommentIcon = ({ width = '3vw', height = '6vh', fill = '#FFFFFF' }) => (
-    <svg width={width} height={height} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+const CommentIcon = ({ className, fill = '#FFFFFF' }) => (
+    <svg className={className} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
         <g fill="none">
             <g transform="translate(-360.000000, -255.000000)">
                 <path 

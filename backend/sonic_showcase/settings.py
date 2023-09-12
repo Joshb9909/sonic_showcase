@@ -30,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['sonicshowcase.com','0.0.0.0','www.sonicshowcase.com']
+ALLOWED_HOSTS = ['sonicshowcase.com','0.0.0.0','www.sonicshowcase.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -120,6 +120,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CORS_ALLOWED_ORIGINS = ["https://sonicshowcase.com"]
+
+# CHANGE BEFORE PUSH CHANGE BEFORE PUSH CHANGE BEFORE PUSH CHANGE BEFORE PUSH CHANGE BEFORE PUSH
+CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOW_CREDENTIALS = True
 
